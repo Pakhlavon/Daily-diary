@@ -62,11 +62,32 @@ public class DbHelper extends SQLiteOpenHelper {
             }
         }
     }
-           public List<Daily> barchaishlar(){
+
+    public List<Daily> korinish(int kid){
+        SQLiteDatabase db =this.getReadableDatabase();
+        List<Daily> dailyList =new ArrayList<>();
+        String s="select * from kasallik where kid=" + kid;
+        Cursor cursor=db.rawQuery(s,null);
+        if (cursor.moveToFirst())
+        {
+            do {
+                Daily daily;
+                daily=new Daily();
+//                        daily.setKid(cursor.getInt(cursor.getColumnIndex("kid")));
+                daily.setTitle(cursor.getString(cursor.getColumnIndex("title")));
+                daily.setDescription(cursor.getString(cursor.getColumnIndex("description")));
+
+                dailyList.add(daily);
+            }while (cursor.moveToNext());
+        }
+        db.close();
+        return dailyList;
+    }
+    public List<Daily> barchaishlar(){
                 SQLiteDatabase db =this.getReadableDatabase();
                 List<Daily> dailyList =new ArrayList<>();
                 String s=null;
-                s="select * from kasallik order by kid asc";
+                s="select * from kasallik";
                 Cursor cursor=db.rawQuery(s,null);
                 if (cursor.moveToFirst())
                 {

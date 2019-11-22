@@ -1,6 +1,7 @@
 package nisd.uz.dailydiary.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import nisd.uz.dailydiary.MainActivity;
 import nisd.uz.dailydiary.Model.Daily;
 import nisd.uz.dailydiary.R;
+import nisd.uz.dailydiary.UmumiyOlish;
 import nisd.uz.dailydiary.db.DbHelper;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.Viewholder> {
@@ -40,12 +43,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Viewholder> {
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-                Daily daily= dailyList.get(position);
+                final Daily daily= dailyList.get(position);
 
                 holder.sana.setText(daily.getSana());
                holder.title.setText(daily.getTitle());
-    }
 
+               holder.title.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       Intent intent1 =new Intent(context, UmumiyOlish.class);
+                       intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                       intent1.putExtra("id",daily.getKid());
+                       System.out.println(daily.getKid());
+                       context.startActivity(intent1);
+                   }
+               });
+    }
     @Override
     public int getItemCount() {
         return dailyList.size();
